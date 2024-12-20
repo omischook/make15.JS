@@ -126,26 +126,23 @@ public class Make15 {
 
 
     public static void nextRound(Player player, Player computer, Deck d) {
+        replaceCard(computer, 0, d);
+        System.out.println("Next Round");
         System.out.println("Player's hand:");
         player.printHand();
         System.out.println("Computer's hand:");
         computer.printHand();
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Type 'DISCARD' to remove a card otherwise enter nothing: ");
-        String discard = scanner.nextLine();
+        System.out.println("Player's turn, select a card from your hand that combines with the computer's card to make 15");
         System.out.print("Enter the number of the card you want to effect: ");
-        // Currently gives card numbers 0-3 will need a -1 to get the correct card
         int card = scanner.nextInt();
+        scanner.nextLine();
         card = card - 1;
         System.out.println("You selected: " + player.hand[card].getValue() + " of " + player.hand[card].getSuit());
-        if (discard.equals("DISCARD")) {
-            System.out.println("You have discarded: " + player.hand[card].getValue() + " of " + player.hand[card].getSuit());
-            discardCard(player, card, d);
-        } else if (player.hand[card].convertValue() + computer.hand[0].convertValue() == 15) {
+
+        if (player.hand[card].convertValue() + computer.hand[0].convertValue() == 15) {
             System.out.println("You have made 15 with: " + player.hand[card].getValue() + " of " + player.hand[card].getSuit() + " and " + computer.hand[0].getValue() + " of " + computer.hand[0].getSuit());
-            player.hand[card] = null;
-            computer.hand[0] = null;
-            player.addScore();
+            replaceCard(player, card, d);
         } else {
             System.out.println("You did not make 15");
             if (suitCheck(player, computer, d)) {
@@ -153,7 +150,21 @@ public class Make15 {
                 nextRound(player, computer, d);
             } else {
                 System.out.println("You did not play a card of the same suit game over");
+                gameOver(player, computer, d);
             }
         }
+        System.out.println("before the next round would you like to discard any face cards? if so type 'DISCARD' otherwise type 'NO'");
+        String answer = scanner.nextLine();
+        while (answer.equals("DISCARD")) {
+            System.out.println("Enter the number of the card you want to effect: ");
+            card = scanner.nextInt();
+            scanner.nextLine();
+            card = card - 1;
+            System.out.println("You selected: " + player.hand[card].getValue() + " of " + player.hand[card].getSuit());
+            discardCard(player, card, d);
+            System.out.println("before the next round would you like to discard any face cards? if so type 'DISCARD' otherwise type 'NO'");
+            answer = scanner.nextLine();
+        }
+        nextRound(player, computer, d);
     }
 }
