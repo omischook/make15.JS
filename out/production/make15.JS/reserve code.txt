@@ -1,0 +1,15 @@
+int score = player.getScore();
+        int[] scores = FileManager.readScoreBoardScores();
+        //Now we have values like [] and [H] [] [] [] [L] order is determined because the order is read top down
+        for(int i = 0; i < 4; i++){
+            if (score <= scores[i]){
+                //This is the shifting of the values in the array to make space for the new score
+                for (int j = 3; j > i; j--){
+                    scores[j] = scores[j-1];
+                }
+                scores[i] = score;
+                break;
+
+            }
+        }
+        FileManager.writeScoreBoard(scores);

@@ -3,14 +3,16 @@ public class Player {
     //
     protected Card[] hand;
     private int score;
+    private String name;
 
     //creates a new player object with an array of 4 cards in its hand (Cards[])
-    public static Player createHumanPlayer(Deck d) {
+    public static Player createHumanPlayer(Deck d, String name) {
         Player player = new Player();
         player.hand = new Card[4];
         for (int i = 0; i < 4; i++) {
             player.hand[i] = d.deal();
         }
+        player.setName(name);
         return player;
     }
 
@@ -26,6 +28,14 @@ public class Player {
         for (int i = 0; i < hand.length; i++) {
             System.out.println(hand[i].getValue() + " of " + hand[i].getSuit());
         }
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
     }
 
 
