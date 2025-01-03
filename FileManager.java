@@ -4,10 +4,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
+
 
 public class FileManager {
     public static File scoreBoard = new File("scoreBoard.txt");
@@ -74,7 +73,7 @@ public class FileManager {
 
     //--------------------------------------------------------------------------------
 
-    public static void writeScoreBoard(int[] scores) {
+    /*public static void writeScoreBoard(int[] scores) {
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(scoreBoard));
             for (int score : scores) {
@@ -124,7 +123,7 @@ public class FileManager {
         } catch (IOException e) {
             System.out.println("Error occured in fileManager class");
         }
-    }
+    }*/
 
     public static void printScoreBoard(){
         try {
