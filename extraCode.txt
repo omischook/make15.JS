@@ -1,0 +1,121 @@
+ public static void replaceCard(Player player, int card, Deck d) {
+        // assigns a new card object with name newCard to be a card from the deck d gotten using the deal method
+
+        Card newCard = d.deal();
+        player.hand[card] = newCard;
+    }
+
+    public static void discardCard(Player player, int card, Deck d) {
+        if (player.hand[card].convertValue() == 11) {
+            // assigns a new card object with name newCard to be a card from the deck d gotten using the deal method
+            Card newCard = d.deal();
+            player.hand[card] = newCard;
+        } else {
+            System.out.println("You cannot discard a card that is not a face card");
+        }
+    }
+
+
+
+
+    public static void roundOne(Player player, Player computer, Deck d) {
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("Round 1");
+            System.out.println("Player's turn, select a card from your hand that combines with the computer's card to make 15");
+            System.out.println("If you cannot make 15, type 'DISCARD' & select a card to discard");
+            System.out.println("Select a card by typing its displayed number, for example card 1 is" + player.hand[0].getValue() + " of " + player.hand[0].getSuit());
+            System.out.println("Face cards are worth 11 points and an ace is worth 12 points");
+            System.out.print("Enter the number of the card you want to effect: ");
+            // Currently gives card numbers 0-3 will need a -1 to get the correct card
+            int card;
+            //this is the sanitization of the card input above checking that it is both an input and also within the bounds of the array
+            while (true){
+                try{
+                    card = scanner.nextInt();
+                    scanner.nextLine();
+                    break;
+                }
+                catch (ArrayIndexOutOfBoundsException e){
+                    System.out.println(("You must select a card from your hand"));
+                    scanner.next(); // Clear the invalid input
+                }
+                catch (InputMismatchException e){
+                    System.out.println("You must select a card from your hand");
+                    scanner.next(); // Clear the invalid input
+                }
+            }
+            card = card - 1;
+            System.out.println("You selected: " + player.hand[card].getValue() + " of " + player.hand[card].getSuit());
+            //adding more information to our replay file
+            ReplayManager.writeChosenCard(player, card);
+
+            // gets player to discard a card if they choose to
+            //The player is checked if they have made 15
+            if (player.hand[card].convertValue() + computer.hand[0].convertValue() == 15) {
+                System.out.println("You have made 15 with: " + player.hand[card].getValue() + " of " + player.hand[card].getSuit() + " and " + computer.hand[0].getValue() + " of " + computer.hand[0].getSuit());
+                player.addScore();
+                System.out.println("Player's score: " + player.getScore());
+                ReplayManager.writeRoundOutcome("Win");
+                replaceCard(player, card, d);
+                // checks if the player has played a card of the same suit to see if the game will continue
+            } else {
+                System.out.println("You did not make 15");
+                if (suitCheck(player, computer, d)) {
+                    System.out.println("You have played a card of the same suit you won't gain a point but will move on to the next round");
+                    ReplayManager.writeRoundOutcome("Continue");
+                    nextRound(player, computer, d);
+                } else {
+                    System.out.println("You did not play a card of the same suit game over");
+                    ReplayManager.writeRoundOutcome("Lose");
+                    gameOver(player, d);
+                }
+            }
+            //This is the continuation of the code assuming that the player has won the game as the if statement above will move to here assuming the player has won
+            System.out.println("before the next round would you like to discard any face cards? if so type 'DISCARD' otherwise type 'NO'");
+            String answer = "";
+            //This is the sanitization of the answer input above checking that it is a string
+            while (true){
+                try {
+                    answer = scanner.nextLine();
+                    break;
+                }
+                catch (InputMismatchException e){
+                    System.out.println("Please input a valid answer");
+                }
+            }
+            while (answer.equals("DISCARD")) {
+                System.out.println("Enter the number of the card you want to effect: ");
+                // Currently gives card numbers 0-3 will need a -1 to get the correct card
+                card = scanner.nextInt();
+                //this is the sanitization of the card input above checking that it is both an input and also within the bounds of the array
+                while (true){
+                    try{
+                        scanner.nextLine();
+                        break;
+                    }
+                    catch (ArrayIndexOutOfBoundsException e){
+                        System.out.println(("You must select a card from your hand"));
+                    }
+                    catch (InputMismatchException e){
+                        System.out.println("You must select a card from your hand");
+                    }
+                }
+                card = card - 1;
+                System.out.println("You selected: " + player.hand[card].getValue() + " of " + player.hand[card].getSuit());
+                discardCard(player, card, d);
+                ReplayManager.writeStringToReplay("Player discard the following card");
+                ReplayManager.writeChosenCard(player, card);
+                System.out.println("before the next round would you like to discard any face cards? if so type 'DISCARD' otherwise type 'NO'");
+                //This is the sanitization of the answer input above checking that it is a string
+                while (true){
+                    try {
+                        answer = scanner.nextLine();
+                        break;
+                    }
+                    catch (InputMismatchException e){
+                        System.out.println("Please input a valid answer");
+                    }
+                }
+            }
+            nextRound(player, computer, d);
+        }

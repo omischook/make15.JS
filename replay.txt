@@ -1,0 +1,18 @@
+kPlayer's hand:
+K of ♠
+K of ♦
+Q of ♥
+10 of ♠
+Player's hand:
+4 of ♥
+Player's selected card: K of ♠
+Win
+Player discard the following cardPlayer's selected card: K of ♦
+Player discard the following cardPlayer's selected card: Q of ♥
+Player's hand:
+7 of ♣
+A of ♥
+4 of ♦
+10 of ♠
+Player's hand:
+A of ♦

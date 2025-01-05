@@ -1,0 +1,7 @@
+oPlayer's hand:
+3 of ♣
+4 of ♥
+5 of ♣
+6 of ♦
+Player's hand:
+10 of ♦
